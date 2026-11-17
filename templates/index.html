@@ -1,33 +1,97 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZEUS AI ENTERTAINMENT MIX LIMITED</title>
+    <title>ZEUS AI STUDIO | Professional Media Pipeline</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #0e1117; color: #fff; text-align: center; padding: 50px; }
-        .container { max-width: 600px; margin: auto; background: #161b22; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        textarea { width: 100%; height: 100px; background: #0d1117; color: #fff; border: 1px solid #30363d; border-radius: 5px; padding: 10px; font-size: 16px; margin-bottom: 15px; }
-        button { background: #238636; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; }
-        button:hover { background: #2ea043; }
-        #result { margin-top: 20px; text-align: left; }
+        :root { --bg-dark: #0f1117; --card-bg: #161b22; --accent: #238636; --accent-hover: #2ea043; --text: #f0f6fc; --text-muted: #8b949e; --border: #30363d; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background: var(--bg-dark); color: var(--text); padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
+        .main-wrapper { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 20px; }
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        header h1 { font-size: 20px; font-weight: 600; color: #58a6ff; }
+        header span { font-size: 12px; background: #21262d; padding: 4px 8px; border-radius: 12px; color: var(--text-muted); border: 1px solid var(--border); }
+        .studio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media(max-width: 768px) { .studio-grid { grid-template-columns: 1fr; } }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+        .card h3 { font-size: 15px; color: var(--text); border-left: 3px solid #58a6ff; padding-left: 8px; }
+        label { font-size: 13px; color: var(--text-muted); }
+        textarea, select { width: 100%; background: var(--bg-dark); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 10px; font-size: 14px; outline: none; }
+        textarea { height: 120px; resize: none; }
+        textarea:focus, select:focus { border-color: #58a6ff; }
+        .options-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .btn-generate { background: var(--accent); color: white; border: none; padding: 14px; font-size: 15px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.2s; width: 100%; }
+        .btn-generate:hover { background: var(--accent-hover); }
+        .preview-pane { display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000; border-radius: 8px; border: 1px solid var(--border); min-height: 250px; position: relative; overflow: hidden; text-align: center; padding: 15px; }
+        .preview-pane p { color: var(--text-muted); font-size: 14px; }
+        video { width: 100%; border-radius: 6px; max-height: 300px; }
+        .script-box { background: var(--bg-dark); padding: 10px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px; line-height: 1.4; color: #c9d1d9; max-height: 120px; overflow-y: auto; text-align: left; width: 100%; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>ZEUS AI Studio</h2>
-        <p>Autonomous Film & Media Production Pipeline</p>
-        <textarea id="prompt" placeholder="Enter your movie concept or script prompt here..."></textarea><br>
-        <button onclick="generateVideo()">Generate AI Video</button>
-        <div id="result"></div>
+    <div class="main-wrapper">
+        <header>
+            <h1>ZEUS AI Studio</h1>
+            <span>InVideo-Grade Workflow</span>
+        </header>
+
+        <div class="studio-grid">
+            <!-- Left Card: Input & Prompt Control -->
+            <div class="card">
+                <h3>1. Script & Concept Generator</h3>
+                <div>
+                    <label>Describe your video topic / script prompt</label>
+                    <textarea id="prompt" placeholder="e.g., A cinematic thriller intro about a futuristic AI startup in Delta State..."></textarea>
+                </div>
+                <div class="options-row">
+                    <div>
+                        <label>Voice Style</label>
+                        <select id="voice">
+                            <option value="alloy">Alloy (Balanced)</option>
+                            <option value="onyx">Onyx (Deep Cinematic)</option>
+                            <option value="nova">Nova (Energetic)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Format</label>
+                        <select id="format">
+                            <option value="16:9">16:9 YouTube / Landscape</option>
+                            <option value="9:16">9:16 TikTok / Shorts</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn-generate" onclick="generateVideo()">🚀 Generate AI Production</button>
+            </div>
+
+            <!-- Right Card: Live Preview & Output Workspace -->
+            <div class="card">
+                <h3>2. Production Workspace</h3>
+                <div class="preview-pane" id="previewPane">
+                    <p>Your generated script & rendered video will appear here.</p>
+                </div>
+                <div id="scriptContainer" style="display:none;">
+                    <label>Generated AI Script:</label>
+                    <div class="script-box" id="scriptText"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
         async function generateVideo() {
             const prompt = document.getElementById('prompt').value;
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = "<p>Generating script, audio, and rendering video... Please wait (this can take up to a minute).</p>";
+            const previewPane = document.getElementById('previewPane');
+            const scriptContainer = document.getElementById('scriptContainer');
+            const scriptText = document.getElementById('scriptText');
+
+            if (!prompt.trim()) {
+                alert('Please enter a script prompt first!');
+                return;
+            }
+
+            previewPane.innerHTML = `<p style="color: #58a6ff;">⏳ Directing scene, synthesizing voiceover, and rendering video... (Takes ~30s)</p>`;
+            scriptContainer.style.display = 'none';
 
             try {
                 const response = await fetch('/generate', {
@@ -36,18 +100,16 @@
                     body: JSON.stringify({ prompt: prompt })
                 });
                 const data = await response.json();
+                
                 if (data.status === 'success') {
-                    resultDiv.innerHTML = `
-                        <h3>Generated Script:</h3>
-                        <p style="background: #0d1117; padding: 10px; border-radius: 5px;">${data.script}</p>
-                        <h3>Rendered Output:</h3>
-                        <video width="100%" controls src="${data.video_url}"></video>
-                    `;
+                    scriptText.innerText = data.script;
+                    scriptContainer.style.display = 'block';
+                    previewPane.innerHTML = `<video controls src="${data.video_url}"></video>`;
                 } else {
-                    resultDiv.innerHTML = `<p style="color: #f85149;">Error: ${data.message}</p>`;
+                    previewPane.innerHTML = `<p style="color: #f85149;">Production Error: ${data.message}</p>`;
                 }
             } catch (err) {
-                resultDiv.innerHTML = `<p style="color: #f85149;">Request failed: ${err}</p>`;
+                previewPane.innerHTML = `<p style="color: #f85149;">Network connection failed: ${err}</p>`;
             }
         }
     </script>
