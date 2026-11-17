@@ -1,11 +1,11 @@
-
 import os
 import json
-from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask import Flask, render_template, request, jsonify
 from openai import OpenAI
 from moviepy.editor import ColorClip, TextClip, AudioFileClip, CompositeVideoClip
 
 app = Flask(__name__)
+
 
 # Initialize the OpenAI client securely using environment variables
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
