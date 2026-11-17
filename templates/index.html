@@ -3,141 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZEUS AI STUDIO | Professional Media Suite</title>
+    <title>ZEUS AI ENTERTAINMENT MIX LIMITED | Enterprise Studio</title>
     <style>
         :root {
-            --bg-base: #0b0e14;
-            --bg-panel: #131822;
-            --border-color: #212631;
+            --bg-base: #06080c;
+            --bg-panel: #0e131f;
+            --border-color: #1f293d;
             --accent-glow: #00d2ff;
-            --accent-green: #2ea043;
+            --accent-gold: #f59e0b;
+            --accent-green: #238636;
             --text-main: #f0f6fc;
             --text-muted: #8b949e;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { background: var(--bg-base); color: var(--text-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
-        /* Top Navigation Bar */
-        nav { height: 60px; background: var(--bg-panel); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
-        .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; color: #fff; }
-        .brand span { color: var(--accent-glow); font-size: 12px; border: 1px solid var(--accent-glow); padding: 2px 8px; border-radius: 4px; }
-        .user-status { font-size: 13px; color: var(--text-muted); }
+        /* SaaS Top Navbar */
+        nav { height: 70px; background: var(--bg-panel); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; flex-shrink: 0; }
+        .brand-box { display: flex; align-items: center; gap: 14px; }
+        .brand-title { font-weight: 800; font-size: 17px; letter-spacing: 0.5px; color: #fff; }
+        .badge-pro { background: rgba(245, 158, 11, 0.1); color: var(--accent-gold); border: 1px solid var(--accent-gold); font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: 600; }
+        
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+        .billing-pill { background: #161e31; border: 1px solid var(--border-color); padding: 6px 14px; border-radius: 20px; font-size: 13px; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .billing-pill span { color: var(--accent-glow); font-weight: 600; }
 
-        /* Main Studio Work Area */
-        .workspace { display: grid; grid-template-columns: 350px 1fr 320px; flex: 1; overflow: hidden; }
-        @media(max-width: 1024px) { .workspace { grid-template-columns: 1fr; overflow-y: auto; } }
+        /* Main Studio Workspace Grid */
+        .workspace { display: grid; grid-template-columns: 380px 1fr 340px; flex: 1; overflow: hidden; }
+        @media(max-width: 1280px) { .workspace { grid-template-columns: 350px 1fr; } .panel-billing { display: none; } }
 
         /* Panels */
-        .panel { background: var(--bg-panel); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 20px; gap: 20px; overflow-y: auto; }
+        .panel { background: var(--bg-panel); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 24px; gap: 20px; overflow-y: auto; }
         .panel-right { border-left: 1px solid var(--border-color); border-right: none; }
-        .panel h3 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 5px; }
+        .panel h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-muted); font-weight: 700; margin-bottom: 2px; }
 
-        /* Controls */
-        label { font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 6px; }
-        textarea, select { width: 100%; background: #080a0f; color: var(--text-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; font-size: 14px; outline: none; transition: border 0.2s; }
-        textarea:focus, select:focus { border-color: var(--accent-glow); }
-        textarea { height: 140px; resize: none; }
+        .control-group { display: flex; flex-direction: column; gap: 8px; }
+        label { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+        input[type="text"], textarea, select { width: 100%; background: #06080c; color: var(--text-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; font-size: 14px; outline: none; transition: border-color 0.2s; }
+        input[type="text"]:focus, textarea:focus, select:focus { border-color: var(--accent-glow); }
+        textarea { height: 110px; resize: none; line-height: 1.4; }
 
-        .btn-action { background: linear-gradient(135deg, #238636, #2ea043); color: white; border: none; padding: 14px; font-size: 15px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: opacity 0.2s; width: 100%; box-shadow: 0 4px 12px rgba(46,160,67,0.3); }
-        .btn-action:hover { opacity: 0.9; }
+        .btn-lock { background: #1f293d; color: var(--accent-glow); border: 1px solid var(--accent-glow); padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.2s; width: 100%; }
+        .btn-lock:hover { background: rgba(0, 210, 255, 0.1); }
+        
+        .btn-action { background: var(--accent-green); color: white; border: none; padding: 14px; font-size: 15px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.2s; width: 100%; box-shadow: 0 4px 14px rgba(35, 134, 54, 0.3); }
+        .btn-action:hover { background: #2ea043; }
+        .btn-action:disabled { background: #1f293d; color: var(--text-muted); cursor: not-allowed; box-shadow: none; }
 
         /* Center Stage Preview */
-        .stage { display: flex; flex-direction: column; background: #05070a; position: relative; overflow-y: auto; padding: 20px; gap: 20px; }
-        .viewport { flex: 1; background: #000; border: 1px solid var(--border-color); border-radius: 8px; display: flex; align-items: center; justify-content: center; min-height: 380px; position: relative; overflow: hidden; }
-        .viewport p { color: var(--text-muted); font-size: 14px; text-align: center; padding: 20px; }
-        video { width: 100%; max-height: 100%; border-radius: 6px; }
+        .stage { display: flex; flex-direction: column; background: var(--bg-base); padding: 24px; gap: 20px; overflow-y: auto; }
+        .stage-header { font-size: 13px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .viewport { flex: 1; background: #000; border: 1px solid var(--border-color); border-radius: 10px; display: flex; align-items: center; justify-content: center; min-height: 340px; position: relative; overflow: hidden; box-shadow: inset 0 4px 20px rgba(0,0,0,0.9); }
+        .viewport p { color: var(--text-muted); font-size: 14px; text-align: center; padding: 30px; }
+        video { width: 100%; max-height: 100%; border-radius: 8px; outline: none; }
 
-        /* Timeline / Script Track */
-        .timeline { height: 160px; background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .script-output { flex: 1; background: #080a0f; border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; font-size: 13px; color: #c9d1d9; overflow-y: auto; line-height: 1.4; }
+        /* Timeline & Script Track */
+        .timeline { height: 160px; background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+        .script-output { flex: 1; background: #06080c; border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; font-size: 13px; color: #c9d1d9; overflow-y: auto; line-height: 1.5; }
 
-        /* Loader Animation */
-        .loader { border: 3px solid rgba(255,255,255,0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: var(--accent-glow); animation: spin 1s linear infinite; margin: auto; }
+        /* Status & Actor Card */
+        .actor-status-card { background: #06080c; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; font-size: 13px; display: flex; align-items: center; justify-content: space-between; }
+        .status-dot { width: 8px; height: 8px; background: #f59e0b; border-radius: 50%; display: inline-block; }
+        .status-dot.active { background: #238636; }
+
+        .loader { border: 3px solid rgba(255,255,255,0.1); width: 40px; height: 40px; border-radius: 50%; border-left-color: var(--accent-glow); animation: spin 1s linear infinite; margin: auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <!-- Top Navigation -->
+    <!-- SaaS Navigation Bar -->
     <nav>
-        <div class="brand">
-            ZEUS AI STUDIO <span>ENTERPRISE V2</span>
+        <div class="brand-box">
+            <span class="brand-title">ZEUS AI STUDIO</span>
+            <span class="badge-pro">ENTERPRISE SaaS</span>
         </div>
-        <div class="user-status">Workspace: Active Production Node</div>
+        <div class="nav-right">
+            <div class="billing-pill" onclick="alert('Subscription Tier: Enterprise Unlimited\nMonthly Billing: Active ($99/mo)')">
+                Billing Cycle: <span>Active Pro</span>
+            </div>
+        </div>
     </nav>
 
-    <!-- Main Workspace Grid -->
+    <!-- Main Workspace -->
     <div class="workspace">
-        <!-- Left Panel: Scene & Prompt Controls -->
+        
+        <!-- Left Panel: Lead Actor & Script Director -->
         <div class="panel">
-            <h3>1. AI Director & Prompt</h3>
-            <div>
-                <label>Production Concept / Script Prompt</label>
-                <textarea id="prompt" placeholder="Describe your film sequence, commercial, or narrative action..."></textarea>
+            <h3>1. Lead Actor & Character Gateway</h3>
+            <div class="control-group">
+                <label>Lead Actor / Avatar Name</label>
+                <input type="text" id="actorName" placeholder="e.g., Commander Marcus / Cybernetic Hero">
             </div>
-            <div>
-                <label>Voice Synthesizer Model</label>
-                <select id="voice">
-                    <option value="alloy">Alloy (Balanced Professional)</option>
-                    <option value="onyx">Onyx (Deep Cinematic Narrative)</option>
-                    <option value="nova">Nova (Dynamic & Energetic)</option>
-                    <option value="shimmer">Shimmer (Warm Expressive)</option>
+            <div class="control-group">
+                <label>Actor Description & Visual Prompt</label>
+                <textarea id="actorDesc" style="height: 70px;" placeholder="e.g., Realistic human male, cyberpunk aesthetic, sharp features..."></textarea>
+            </div>
+            <button class="btn-lock" onclick="lockActorProfile()">🔒 Lock In Lead Actor</button>
+
+            <div class="actor-status-card">
+                <div>
+                    <span id="actorStatusText" style="color: var(--text-muted); font-size: 12px;">Actor Status: Not Locked</span>
+                </div>
+                <div><span class="status-dot" id="statusDot"></span></div>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 5px 0;">
+
+            <h3>2. Script & Production Controls</h3>
+            <div class="control-group">
+                <label>Movie / Scene Prompt</label>
+                <textarea id="prompt" placeholder="Enter your script concept. Must lock actor first..." disabled></textarea>
+            </div>
+            <div class="control-group">
+                <label>Voice Model</label>
+                <select id="voice" disabled>
+                    <option value="alloy">Alloy (Professional Narrator)</option>
+                    <option value="onyx">Onyx (Deep Cinematic Baritone)</option>
+                    <option value="nova">Nova (Dynamic Studio Voice)</option>
                 </select>
             </div>
-            <div>
-                <label>Output Aspect Ratio</label>
-                <select id="aspect">
-                    <option value="16:9">16:9 Cinematic / YouTube Landscape</option>
-                    <option value="9:16">9:16 Vertical / TikTok / Shorts</option>
+            <div class="control-group">
+                <label>Aspect Ratio</label>
+                <select id="aspect" disabled>
+                    <option value="16:9">16:9 YouTube / Cinematic Landscape</option>
+                    <option value="9:16">9:16 TikTok / Vertical Shorts</option>
                 </select>
             </div>
-            <button class="btn-action" onclick="startProduction()">🎬 Initialize AI Production</button>
+            <button class="btn-action" id="generateBtn" onclick="startProduction()" disabled>🚀 Launch AI Production</button>
         </div>
 
-        <!-- Center Stage: Live Media Viewport -->
+        <!-- Center Stage: Viewport & Script Track -->
         <div class="stage">
-            <div style="font-size: 13px; color: var(--text-muted); font-weight: 600;">LIVE RENDER VIEWPORT</div>
+            <div class="stage-header">
+                <span>Live Production Viewport</span>
+                <span id="activeActorTag" style="color: var(--accent-glow); font-size: 12px;">Locked Actor: None</span>
+            </div>
             <div class="viewport" id="viewport">
-                <p>Configure your prompt on the left and initialize production to render your automated video stream.</p>
+                <p>Step 1: Define and lock in your Lead Actor on the left control panel to activate the script generation engine.</p>
             </div>
             <div class="timeline">
-                <div style="font-size: 12px; color: var(--text-muted); font-weight: 600;">GENERATED SCRIPT TRACK</div>
-                <div class="script-output" id="scriptOutput">Awaiting generation sequence...</div>
+                <div style="font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Generated Storyboard & Script Track</div>
+                <div class="script-output" id="scriptOutput">Awaiting character lock and generation sequence...</div>
             </div>
         </div>
 
-        <!-- Right Panel: Asset Manager & Render Stats -->
+        <!-- Right Panel: SaaS Usage & Node Analytics -->
         <div class="panel panel-right">
-            <h3>3. Pipeline Status</h3>
-            <div style="background: #080a0f; border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; font-size: 13px;">
-                <p style="color: var(--accent-glow); margin-bottom: 8px; font-weight: 600;">● Engine Online</p>
-                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.4;">OpenAI GPT-4o & TTS pipelines ready. MoviePy video composition engine active on Render cluster.</p>
+            <h3>3. SaaS Node Metrics</h3>
+            <div style="background: #06080c; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; font-size: 13px;">
+                <p style="color: var(--accent-glow); margin-bottom: 6px; font-weight: 700;">● Cloud Cluster Online</p>
+                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.4;">OpenAI GPT-4o & TTS pipelines operational. MoviePy render node active.</p>
             </div>
-            <h3>Asset Storage</h3>
-            <div style="font-size: 12px; color: var(--text-muted);">
-                <p>• Audio: /static/audio/</p>
-                <p style="margin-top: 5px;">• Renders: /static/renders/</p>
+            <h3>Monthly Quota</h3>
+            <div style="font-size: 12px; color: var(--text-muted); display: flex; flex-direction: column; gap: 8px;">
+                <p>• Render Minutes Used: <strong>14.2 / 500 hrs</strong></p>
+                <p>• Storage Used: <strong>1.2 GB / 50 GB</strong></p>
+                <p>• Billing Status: <strong style="color: var(--accent-green);">Current</strong></p>
             </div>
         </div>
     </div>
 
     <script>
+        let lockedActorName = "";
+
+        async function lockActorProfile() {
+            const name = document.getElementById('actorName').value.trim();
+            const desc = document.getElementById('actorDesc').value.trim();
+
+            if (!name || !desc) {
+                alert('Please provide both an actor name and visual description before locking.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/lock-actor', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ actorName: name, actorDesc: desc })
+                });
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    lockedActorName = data.actor.name;
+                    document.getElementById('actorStatusText').innerText = `Actor Locked: ${lockedActorName}`;
+                    document.getElementById('statusDot').classList.add('active');
+                    document.getElementById('activeActorTag').innerText = `Locked Actor: ${lockedActorName}`;
+                    
+                    // Unlock production controls
+                    document.getElementById('prompt').disabled = false;
+                    document.getElementById('voice').disabled = false;
+                    document.getElementById('aspect').disabled = false;
+                    document.getElementById('generateBtn').disabled = false;
+                    
+                    alert(`Lead actor "${lockedActorName}" successfully locked in! You can now write your script and launch production.`);
+                }
+            } catch (err) {
+                alert('Failed to lock actor profile: ' + err);
+            }
+        }
+
         async function startProduction() {
-            const prompt = document.getElementById('prompt').value;
+            const prompt = document.getElementById('prompt').value.trim();
             const voice = document.getElementById('voice').value;
             const aspect = document.getElementById('aspect').value;
             const viewport = document.getElementById('viewport');
             const scriptOutput = document.getElementById('scriptOutput');
 
-            if (!prompt.trim()) {
-                alert('Please provide a script prompt or concept.');
+            if (!prompt) {
+                alert('Please enter a script prompt.');
                 return;
             }
 
             viewport.innerHTML = `
                 <div style="text-align: center;">
                     <div class="loader"></div>
-                    <p style="margin-top: 15px; color: var(--accent-glow);">Synthesizing script, generating voiceover & compiling video frames...</p>
+                    <p style="margin-top: 15px; color: var(--accent-glow);">Directing scene with locked actor "${lockedActorName}", synthesizing voiceover & compiling video...</p>
                 </div>
             `;
             scriptOutput.innerText = "Processing rendering queue...";
@@ -146,7 +228,7 @@
                 const response = await fetch('/generate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt, voice, aspect })
+                    body: JSON.stringify({ prompt, voice, aspect, actor: lockedActorName })
                 });
                 const data = await response.json();
 
