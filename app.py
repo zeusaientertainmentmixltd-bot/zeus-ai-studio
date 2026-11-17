@@ -21,40 +21,46 @@ def index():
 def generate_movie_pipeline():
     try:
         data = request.json or {}
-        prompt = data.get("prompt", "A dramatic cinematic intro about artificial intelligence.")
+        prompt = data.get("prompt", "A cinematic trailer for a high-tech media empire.")
+        voice = data.get("voice", "alloy")
+        aspect = data.get("aspect", "16:9")
         
-        # 1. Generate Script via OpenAI Chat Completion
+        # Determine dimensions based on aspect ratio selection
+        if aspect == "9:16":
+            width, height = 720, 1280
+        else:
+            width, height = 1280, 720
+
+        # 1. Generate Multi-Scene Script via OpenAI GPT-4o
         completion = client.chat.completions.create(
             model="gpt-4o",
             messages=[
-                {"role": "system", "content": "You are a professional film director and screenwriter for ZEUS AI ENTERTAINMENT MIX LIMITED."},
-                {"role": "user", "content": f"Write a short, punchy 3-sentence narration script based on this concept: {prompt}"}
+                {"role": "system", "content": "You are the Executive Producer for ZEUS AI ENTERTAINMENT MIX LIMITED. Generate a dynamic 3-scene cinematic narration script structured neatly."},
+                {"role": "user", "content": f"Create an engaging script based on this concept: {prompt}"}
             ]
         )
         script_text = completion.choices[0].message.content
 
-        # 2. Generate Audio via OpenAI TTS
+        # 2. Generate Narration Audio via OpenAI TTS
         audio_path = "static/audio/narration.mp3"
         response = client.audio.speech.create(
             model="tts-1",
-            voice="alloy",
+            voice=voice,
             input=script_text
         )
         response.stream_to_file(audio_path)
 
-        # 3. Generate Video via MoviePy
+        # 3. Render Video via MoviePy
         output_video_path = "static/renders/output.mp4"
         
-        # Load audio to get duration
         audio_clip = AudioFileClip(audio_path)
         duration = audio_clip.duration
 
-        # Create background clip
-        bg_clip = ColorClip(size=(1280, 720), color=(10, 10, 30), duration=duration)
+        # Background styling
+        bg_clip = ColorClip(size=(width, height), color=(15, 20, 30), duration=duration)
         
-        # Create text clip with fallback handling
         try:
-            txt_clip = TextClip(script_text, fontsize=32, color='white', size=(1100, None), method='caption')
+            txt_clip = TextClip(script_text, fontsize=28, color='white', size=(width - 100, None), method='caption')
             txt_clip = txt_clip.set_duration(duration).set_position('center')
             video = CompositeVideoClip([bg_clip, txt_clip]).set_audio(audio_clip)
         except Exception:
@@ -62,7 +68,6 @@ def generate_movie_pipeline():
 
         video.write_videofile(output_video_path, fps=24, codec='libx264', audio_codec='aac', logger=None)
         
-        # Close clips to free resources
         audio_clip.close()
         video.close()
 
