@@ -3,113 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZEUS AI STUDIO | Professional Media Pipeline</title>
+    <title>ZEUS AI STUDIO | Professional Media Suite</title>
     <style>
-        :root { --bg-dark: #0f1117; --card-bg: #161b22; --accent: #238636; --accent-hover: #2ea043; --text: #f0f6fc; --text-muted: #8b949e; --border: #30363d; }
+        :root {
+            --bg-base: #0b0e14;
+            --bg-panel: #131822;
+            --border-color: #212631;
+            --accent-glow: #00d2ff;
+            --accent-green: #2ea043;
+            --text-main: #f0f6fc;
+            --text-muted: #8b949e;
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background: var(--bg-dark); color: var(--text); padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
-        .main-wrapper { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 20px; }
-        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
-        header h1 { font-size: 20px; font-weight: 600; color: #58a6ff; }
-        header span { font-size: 12px; background: #21262d; padding: 4px 8px; border-radius: 12px; color: var(--text-muted); border: 1px solid var(--border); }
-        .studio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        @media(max-width: 768px) { .studio-grid { grid-template-columns: 1fr; } }
-        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
-        .card h3 { font-size: 15px; color: var(--text); border-left: 3px solid #58a6ff; padding-left: 8px; }
-        label { font-size: 13px; color: var(--text-muted); }
-        textarea, select { width: 100%; background: var(--bg-dark); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 10px; font-size: 14px; outline: none; }
-        textarea { height: 120px; resize: none; }
-        textarea:focus, select:focus { border-color: #58a6ff; }
-        .options-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn-generate { background: var(--accent); color: white; border: none; padding: 14px; font-size: 15px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.2s; width: 100%; }
-        .btn-generate:hover { background: var(--accent-hover); }
-        .preview-pane { display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000; border-radius: 8px; border: 1px solid var(--border); min-height: 250px; position: relative; overflow: hidden; text-align: center; padding: 15px; }
-        .preview-pane p { color: var(--text-muted); font-size: 14px; }
-        video { width: 100%; border-radius: 6px; max-height: 300px; }
-        .script-box { background: var(--bg-dark); padding: 10px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px; line-height: 1.4; color: #c9d1d9; max-height: 120px; overflow-y: auto; text-align: left; width: 100%; }
+        body { background: var(--bg-base); color: var(--text-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* Top Navigation Bar */
+        nav { height: 60px; background: var(--bg-panel); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+        .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; color: #fff; }
+        .brand span { color: var(--accent-glow); font-size: 12px; border: 1px solid var(--accent-glow); padding: 2px 8px; border-radius: 4px; }
+        .user-status { font-size: 13px; color: var(--text-muted); }
+
+        /* Main Studio Work Area */
+        .workspace { display: grid; grid-template-columns: 350px 1fr 320px; flex: 1; overflow: hidden; }
+        @media(max-width: 1024px) { .workspace { grid-template-columns: 1fr; overflow-y: auto; } }
+
+        /* Panels */
+        .panel { background: var(--bg-panel); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 20px; gap: 20px; overflow-y: auto; }
+        .panel-right { border-left: 1px solid var(--border-color); border-right: none; }
+        .panel h3 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 5px; }
+
+        /* Controls */
+        label { font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 6px; }
+        textarea, select { width: 100%; background: #080a0f; color: var(--text-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; font-size: 14px; outline: none; transition: border 0.2s; }
+        textarea:focus, select:focus { border-color: var(--accent-glow); }
+        textarea { height: 140px; resize: none; }
+
+        .btn-action { background: linear-gradient(135deg, #238636, #2ea043); color: white; border: none; padding: 14px; font-size: 15px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: opacity 0.2s; width: 100%; box-shadow: 0 4px 12px rgba(46,160,67,0.3); }
+        .btn-action:hover { opacity: 0.9; }
+
+        /* Center Stage Preview */
+        .stage { display: flex; flex-direction: column; background: #05070a; position: relative; overflow-y: auto; padding: 20px; gap: 20px; }
+        .viewport { flex: 1; background: #000; border: 1px solid var(--border-color); border-radius: 8px; display: flex; align-items: center; justify-content: center; min-height: 380px; position: relative; overflow: hidden; }
+        .viewport p { color: var(--text-muted); font-size: 14px; text-align: center; padding: 20px; }
+        video { width: 100%; max-height: 100%; border-radius: 6px; }
+
+        /* Timeline / Script Track */
+        .timeline { height: 160px; background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .script-output { flex: 1; background: #080a0f; border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; font-size: 13px; color: #c9d1d9; overflow-y: auto; line-height: 1.4; }
+
+        /* Loader Animation */
+        .loader { border: 3px solid rgba(255,255,255,0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: var(--accent-glow); animation: spin 1s linear infinite; margin: auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-    <div class="main-wrapper">
-        <header>
-            <h1>ZEUS AI Studio</h1>
-            <span>InVideo-Grade Workflow</span>
-        </header>
 
-        <div class="studio-grid">
-            <!-- Left Card: Input & Prompt Control -->
-            <div class="card">
-                <h3>1. Script & Concept Generator</h3>
-                <div>
-                    <label>Describe your video topic / script prompt</label>
-                    <textarea id="prompt" placeholder="e.g., A cinematic thriller intro about a futuristic AI startup in Delta State..."></textarea>
-                </div>
-                <div class="options-row">
-                    <div>
-                        <label>Voice Style</label>
-                        <select id="voice">
-                            <option value="alloy">Alloy (Balanced)</option>
-                            <option value="onyx">Onyx (Deep Cinematic)</option>
-                            <option value="nova">Nova (Energetic)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Format</label>
-                        <select id="format">
-                            <option value="16:9">16:9 YouTube / Landscape</option>
-                            <option value="9:16">9:16 TikTok / Shorts</option>
-                        </select>
-                    </div>
-                </div>
-                <button class="btn-generate" onclick="generateVideo()">🚀 Generate AI Production</button>
+    <!-- Top Navigation -->
+    <nav>
+        <div class="brand">
+            ZEUS AI STUDIO <span>ENTERPRISE V2</span>
+        </div>
+        <div class="user-status">Workspace: Active Production Node</div>
+    </nav>
+
+    <!-- Main Workspace Grid -->
+    <div class="workspace">
+        <!-- Left Panel: Scene & Prompt Controls -->
+        <div class="panel">
+            <h3>1. AI Director & Prompt</h3>
+            <div>
+                <label>Production Concept / Script Prompt</label>
+                <textarea id="prompt" placeholder="Describe your film sequence, commercial, or narrative action..."></textarea>
             </div>
+            <div>
+                <label>Voice Synthesizer Model</label>
+                <select id="voice">
+                    <option value="alloy">Alloy (Balanced Professional)</option>
+                    <option value="onyx">Onyx (Deep Cinematic Narrative)</option>
+                    <option value="nova">Nova (Dynamic & Energetic)</option>
+                    <option value="shimmer">Shimmer (Warm Expressive)</option>
+                </select>
+            </div>
+            <div>
+                <label>Output Aspect Ratio</label>
+                <select id="aspect">
+                    <option value="16:9">16:9 Cinematic / YouTube Landscape</option>
+                    <option value="9:16">9:16 Vertical / TikTok / Shorts</option>
+                </select>
+            </div>
+            <button class="btn-action" onclick="startProduction()">🎬 Initialize AI Production</button>
+        </div>
 
-            <!-- Right Card: Live Preview & Output Workspace -->
-            <div class="card">
-                <h3>2. Production Workspace</h3>
-                <div class="preview-pane" id="previewPane">
-                    <p>Your generated script & rendered video will appear here.</p>
-                </div>
-                <div id="scriptContainer" style="display:none;">
-                    <label>Generated AI Script:</label>
-                    <div class="script-box" id="scriptText"></div>
-                </div>
+        <!-- Center Stage: Live Media Viewport -->
+        <div class="stage">
+            <div style="font-size: 13px; color: var(--text-muted); font-weight: 600;">LIVE RENDER VIEWPORT</div>
+            <div class="viewport" id="viewport">
+                <p>Configure your prompt on the left and initialize production to render your automated video stream.</p>
+            </div>
+            <div class="timeline">
+                <div style="font-size: 12px; color: var(--text-muted); font-weight: 600;">GENERATED SCRIPT TRACK</div>
+                <div class="script-output" id="scriptOutput">Awaiting generation sequence...</div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Asset Manager & Render Stats -->
+        <div class="panel panel-right">
+            <h3>3. Pipeline Status</h3>
+            <div style="background: #080a0f; border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; font-size: 13px;">
+                <p style="color: var(--accent-glow); margin-bottom: 8px; font-weight: 600;">● Engine Online</p>
+                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.4;">OpenAI GPT-4o & TTS pipelines ready. MoviePy video composition engine active on Render cluster.</p>
+            </div>
+            <h3>Asset Storage</h3>
+            <div style="font-size: 12px; color: var(--text-muted);">
+                <p>• Audio: /static/audio/</p>
+                <p style="margin-top: 5px;">• Renders: /static/renders/</p>
             </div>
         </div>
     </div>
 
     <script>
-        async function generateVideo() {
+        async function startProduction() {
             const prompt = document.getElementById('prompt').value;
-            const previewPane = document.getElementById('previewPane');
-            const scriptContainer = document.getElementById('scriptContainer');
-            const scriptText = document.getElementById('scriptText');
+            const voice = document.getElementById('voice').value;
+            const aspect = document.getElementById('aspect').value;
+            const viewport = document.getElementById('viewport');
+            const scriptOutput = document.getElementById('scriptOutput');
 
             if (!prompt.trim()) {
-                alert('Please enter a script prompt first!');
+                alert('Please provide a script prompt or concept.');
                 return;
             }
 
-            previewPane.innerHTML = `<p style="color: #58a6ff;">⏳ Directing scene, synthesizing voiceover, and rendering video... (Takes ~30s)</p>`;
-            scriptContainer.style.display = 'none';
+            viewport.innerHTML = `
+                <div style="text-align: center;">
+                    <div class="loader"></div>
+                    <p style="margin-top: 15px; color: var(--accent-glow);">Synthesizing script, generating voiceover & compiling video frames...</p>
+                </div>
+            `;
+            scriptOutput.innerText = "Processing rendering queue...";
 
             try {
                 const response = await fetch('/generate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: prompt })
+                    body: JSON.stringify({ prompt, voice, aspect })
                 });
                 const data = await response.json();
-                
+
                 if (data.status === 'success') {
-                    scriptText.innerText = data.script;
-                    scriptContainer.style.display = 'block';
-                    previewPane.innerHTML = `<video controls src="${data.video_url}"></video>`;
+                    scriptOutput.innerText = data.script;
+                    viewport.innerHTML = `<video controls autoplay src="${data.video_url}"></video>`;
                 } else {
-                    previewPane.innerHTML = `<p style="color: #f85149;">Production Error: ${data.message}</p>`;
+                    viewport.innerHTML = `<p style="color: #f85149;">Production Error: ${data.message}</p>`;
+                    scriptOutput.innerText = "Render failed.";
                 }
             } catch (err) {
-                previewPane.innerHTML = `<p style="color: #f85149;">Network connection failed: ${err}</p>`;
+                viewport.innerHTML = `<p style="color: #f85149;">Network connection failed: ${err}</p>`;
+                scriptOutput.innerText = "Error connecting to server.";
             }
         }
     </script>
